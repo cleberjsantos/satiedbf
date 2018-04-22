@@ -28,3 +28,5 @@ ABOUT_TEXT = """ <!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"
                     <p class=\"p_class\">This is the MIT license: <a href=\"http://www.opensource.org/licenses/mit-license.php\" target=\"_blank\">http://www.opensource.org/licenses/mit-license.php</a></p>
                    </body></html>
 """
+
+ENCODING_SUPPORT = ('utf8','latin-1','cp850')

@@ -7,8 +7,13 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from Controller.Utils import _fromUtf8, _translate, _get_icon, DBFRead
 from View.FrmInformation import Ui_FrmInformation
+from Controller.Utils import _fromUtf8, _translate
+from Controller.Utils import _get_icon, _get_img
+from Controller.Utils import DBFRead
+from Controller.config import ENCODING_SUPPORT
+
+import webbrowser
 
 
 class Ui_FrmPrincipal(object):
@@ -17,6 +22,9 @@ class Ui_FrmPrincipal(object):
         dlg.setText(s)
         dlg.setIcon(QtWidgets.QMessageBox.Critical)
         dlg.show()
+
+    def question_url(self):
+        webbrowser.open_new_tab('http://www.dbase.com/KnowledgeBase/int/db7_file_fmt.htm')
 
     def FrmImport_Click(self):
         """ """
@@ -33,6 +41,12 @@ class Ui_FrmPrincipal(object):
             self.dbf = self.read_dbf.parseDBF()
 
             # TODO Load DBF to Table Grid
+            self.tableWidget.setRowCount(0)
+            for row_number , row_data in enumerate(self.dbf):
+                self.tableWidget.insertRow(row_number)
+                for column_number, data in enumerate(row_data):
+                    self.tableWidget.setItem(row_number, column_number,
+                            QtWidgets.QTableWidgetItem(str(data)))
 
     def FrmInformation_Click(self):
         """ """
@@ -47,6 +61,7 @@ class Ui_FrmPrincipal(object):
         iconImport = _get_icon("Images/import.png")
         iconExport = _get_icon("Images/export.png")
         iconInfo = _get_icon("Images/info.png")
+        iconQuestion = _get_icon("Images/question.png")
 
         # Initial Window config
         FrmPrincipal.setLocale(QtCore.QLocale(QtCore.QLocale.C, QtCore.QLocale.AnyCountry))
@@ -78,8 +93,9 @@ class Ui_FrmPrincipal(object):
                                      "")
         self.btnImport.setIcon(iconImport)
         self.btnImport.setIconSize(QtCore.QSize(30, 30))
-        self.btnImport.setObjectName("btnImport")
+        self.btnImport.setObjectName(_fromUtf8("btnImport"))
         # Btn Import Click Event
+        #import pdb; pdb.set_trace()
         self.btnImport.clicked.connect(self.FrmImport_Click)
 
         # Btn Export
@@ -94,7 +110,7 @@ class Ui_FrmPrincipal(object):
         self.btnExport.setIcon(iconExport)
         self.btnExport.setIconSize(QtCore.QSize(30, 30))
         self.btnExport.setShortcut("")
-        self.btnExport.setObjectName("btnExport")
+        self.btnExport.setObjectName(_fromUtf8("btnExport"))
 
         # Bnt Information
         self.btnInfo = QtWidgets.QPushButton(self.centralwidget)
@@ -108,7 +124,7 @@ class Ui_FrmPrincipal(object):
         self.btnInfo.setIcon(iconInfo)
         self.btnInfo.setIconSize(QtCore.QSize(30, 30))
         self.btnInfo.setShortcut("")
-        self.btnInfo.setObjectName("btnInfo")
+        self.btnInfo.setObjectName(_fromUtf8("btnInfo"))
         # Btn Info Click Event
         self.btnInfo.clicked.connect(self.FrmInformation_Click)
 
@@ -117,17 +133,105 @@ class Ui_FrmPrincipal(object):
         self.columnView = QtWidgets.QColumnView(self.centralwidget)
         self.columnView.setGeometry(QtCore.QRect(10, 10, 779, 101))
         self.columnView.setStyleSheet("background:#fff")
-        self.columnView.setObjectName("columnView")
+        self.columnView.setObjectName(_fromUtf8("columnView"))
 
+        # Dbf Text
         self.labelDbfText = QtWidgets.QLabel(self.centralwidget)
-        self.labelDbfText.setGeometry(QtCore.QRect(10, 190, 779, 19))
+        self.labelDbfText.setGeometry(QtCore.QRect(10, 190, 200, 19))
         self.labelDbfText.setFont(font)
         self.labelDbfText.setStyleSheet("")
-        self.labelDbfText.setObjectName("labelDbfText")
+        self.labelDbfText.setObjectName(_fromUtf8("labelDbfText"))
 
+        font.setPointSize(10)
+
+        # GroupBox import options
+        self.groupBoxImport = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBoxImport.setGeometry(QtCore.QRect(230, 130, 561, 80))
+        self.groupBoxImport.setFont(font)
+        self.groupBoxImport.setStyleSheet("QGroupBox {\n"
+                                          "  background-color: transparent;\n"
+                                          "  background-clip: margin;\n"
+                                          "  border: 1px solid #777;\n"
+                                          "  border-radius: 4px;\n"
+                                          "  margin-top: 10px;\n"
+                                          "  padding-top: 4px; }\n\n"
+                                          "QGroupBox::title {\n"
+                                          "  padding: 2px 8px;\n"
+                                          "  subcontrol-origin: margin;\n"
+                                          "  subcontrol-position: top center;\n"
+                                          "  color: #555;}\n\n"
+                                          "")
+        self.groupBoxImport.setObjectName(_fromUtf8("groupBoxImport"))
+
+        self.checkBoxMemofile = QtWidgets.QCheckBox(self.groupBoxImport)
+        self.checkBoxMemofile.setGeometry(QtCore.QRect(20, 40, 181, 20))
+        self.checkBoxMemofile.setFont(font)
+        self.checkBoxMemofile.setStyleSheet("")
+        self.checkBoxMemofile.setChecked(True)
+        self.checkBoxMemofile.setObjectName(_fromUtf8("checkBoxMemofile"))
+
+        #self.labelQuestionMemofile = QtWidgets.QLabel(self.groupBoxImport)
+        self.labelQuestionMemofile = QtWidgets.QPushButton(self.groupBoxImport)
+        self.labelQuestionMemofile.setGeometry(QtCore.QRect(190, 43, 16, 16))
+        self.labelQuestionMemofile.setFont(font)
+        self.labelQuestionMemofile.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.labelQuestionMemofile.setWhatsThis("")
+        self.labelQuestionMemofile.setAccessibleDescription("")
+        self.labelQuestionMemofile.setText("")
+        self.labelQuestionMemofile.setIcon(iconQuestion)
+        self.labelQuestionMemofile.setIconSize(QtCore.QSize(16, 16))
+        self.labelQuestionMemofile.setStyleSheet("QPushButton {   background-color: transparent; border: none; }")
+        self.labelQuestionMemofile.setObjectName(_fromUtf8("labelQuestionMemofile"))
+        # Action to Label Questin clickable
+        self.labelQuestionMemofile.clicked.connect(self.question_url)
+
+        self.labelEncoding = QtWidgets.QLabel(self.groupBoxImport)
+        self.labelEncoding.setGeometry(QtCore.QRect(290, 30, 71, 16))
+        self.labelEncoding.setFont(font)
+        self.labelEncoding.setObjectName(_fromUtf8("labelEncoding"))
+
+        self.comboBoxEncoding = QtWidgets.QComboBox(self.groupBoxImport)
+        self.comboBoxEncoding.setGeometry(QtCore.QRect(290, 50, 101, 22))
+        self.comboBoxEncoding.setFont(font)
+        self.comboBoxEncoding.setObjectName("comboBoxEncoding")
+        self.comboBoxEncoding.setStyleSheet("QComboBox {\n"
+                                            "    border: 1px solid #8f8f91;\n"
+                                            "    border-radius: 3px;\n"
+                                            "    padding: 1px 18px 1px 3px;\n"
+                                            "    min-width: 6em;}\n"
+                                            "QComboBox:editable {\n"
+                                            "    background: white;}\n"
+                                            "QComboBox:!editable, QComboBox::drop-down:editable {\n"
+                                            "     background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, \n"
+                                            "                                 stop: 0 #f6f7fa, \n"
+                                            "                                 stop: 1 #dadbde);\n"
+                                            "     color: #000;}\n"
+                                            "QComboBox:!editable:on, QComboBox::drop-down:editable:on {\n"
+                                            "    background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,\n"
+                                            "                                stop: 0 #E1F5A9,\n"
+                                            "                                stop: 1 #cedf9a);}\n"
+                                            "QComboBox:on {\n"
+                                            "    padding-top: 3px;\n"
+                                            "    padding-left: 4px;}\n"
+                                            "QComboBox::drop-down {\n"
+                                            "    subcontrol-origin: padding;\n"
+                                            "    subcontrol-position: top right;\n"
+                                            "    width: 15px;\n"
+                                            "    border-left-width: 1px;\n"
+                                            "    border-left-color: darkgray;\n"
+                                            "    border-left-style: solid;\n"
+                                            "    border-top-right-radius: 3px;\n"
+                                            "    border-bottom-right-radius: 3px;}\n"
+                                            "QComboBox::down-arrow {\n"
+                                            "    image: url(Images/downarrow.png);}\n"
+                                            "QComboBox::down-arrow:on {\n"
+                                            "    top: 1px;\n"
+                                            "    left: 1px;}\n")
+        for cb_i, cb_v in enumerate(ENCODING_SUPPORT):
+            self.comboBoxEncoding.addItem("")
+            self.comboBoxEncoding.setItemText(cb_i, _fromUtf8(cb_v))
 
         # Table GridView for DBF load
-        font.setPointSize(10)
         self.tableWidget = QtWidgets.QTableWidget(self.centralwidget)
         self.tableWidget.setGeometry(QtCore.QRect(10, 220, 779, 334))
         self.tableWidget.setFont(font)
@@ -138,7 +242,7 @@ class Ui_FrmPrincipal(object):
         self.tableWidget.setGridStyle(QtCore.Qt.DotLine)
         self.tableWidget.setRowCount(10)
         self.tableWidget.setColumnCount(8)
-        self.tableWidget.setObjectName("tableWidget")
+        self.tableWidget.setObjectName(_fromUtf8("tableWidget"))
 
         self.labelTotalData = QtWidgets.QLabel(self.centralwidget)
         self.labelTotalData.setGeometry(QtCore.QRect(10, 560, 89, 14))
@@ -151,7 +255,7 @@ class Ui_FrmPrincipal(object):
         self.labelTotalData.setFrameShadow(QtWidgets.QFrame.Raised)
         self.labelTotalData.setTextFormat(QtCore.Qt.RichText)
         self.labelTotalData.setScaledContents(False)
-        self.labelTotalData.setObjectName("labelTotalData")
+        self.labelTotalData.setObjectName(_fromUtf8("labelTotalData"))
         self.labelTotalDataValue = QtWidgets.QLabel(self.centralwidget)
         self.labelTotalDataValue.setGeometry(QtCore.QRect(120, 560, 41, 16))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
@@ -159,13 +263,14 @@ class Ui_FrmPrincipal(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.labelTotalDataValue.sizePolicy().hasHeightForWidth())
         self.labelTotalDataValue.setSizePolicy(sizePolicy)
-        self.labelTotalDataValue.setObjectName("labelTotalDataValue")
+        self.labelTotalDataValue.setObjectName(_fromUtf8("labelTotalDataValue"))
 
         self.columnView.raise_()
         self.btnImport.raise_()
         self.btnExport.raise_()
         self.btnInfo.raise_()
         self.labelDbfText.raise_()
+        self.groupBoxImport.raise_()
         self.tableWidget.raise_()
         self.labelTotalData.raise_()
         self.labelTotalDataValue.raise_()
@@ -181,6 +286,9 @@ class Ui_FrmPrincipal(object):
         self.btnExport.setText(_translate("FrmPrincipal", "Export"))
         self.btnInfo.setText(_translate("FrmPrincipal", "About"))
         self.labelDbfText.setText(_translate("FrmPrincipal", "DBF Visualization"))
+        self.groupBoxImport.setTitle(_translate("FrmPrincipal", "Import options"))
+        self.checkBoxMemofile.setText(_translate("FrmPrincipal", "ignore missing memofile"))
+        self.labelEncoding.setText(_translate("FrmPrincipal", "Encoding"))
         self.tableWidget.setSortingEnabled(True)
         self.labelTotalData.setText(_translate("FrmPrincipal", "Total data"))
         self.labelTotalDataValue.setText(_translate("FrmPrincipal", "0"))
