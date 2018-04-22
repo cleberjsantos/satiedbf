@@ -7,11 +7,33 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from Controller.Utils import _fromUtf8, _translate, _get_icon
+from Controller.Utils import _fromUtf8, _translate, _get_icon, DBFRead
 from View.FrmInformation import Ui_FrmInformation
 
 
 class Ui_FrmPrincipal(object):
+    def dialog_critical(self, s):
+        dlg = QtWidgets.QMessageBox(self)
+        dlg.setText(s)
+        dlg.setIcon(QtWidgets.QMessageBox.Critical)
+        dlg.show()
+
+    def FrmImport_Click(self):
+        """ """
+        # self.path holds the path of the currently open file.
+        # If none, we haven't got a file open yet (or creating new).
+        self.path = None
+        options = QtWidgets.QFileDialog.Options()
+        options |= QtWidgets.QFileDialog.DontUseNativeDialog
+
+        self.path, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Import file", "", "DBF files (*.dbf)", options=options)
+
+        if self.path:
+            self.read_dbf = DBFRead(self.path, char_decode_errors='ignore')
+            self.dbf = self.read_dbf.parseDBF()
+
+            # TODO Load DBF to Table Grid
+
     def FrmInformation_Click(self):
         """ """
         self.frmInformation = QtWidgets.QMainWindow()
@@ -57,6 +79,8 @@ class Ui_FrmPrincipal(object):
         self.btnImport.setIcon(iconImport)
         self.btnImport.setIconSize(QtCore.QSize(30, 30))
         self.btnImport.setObjectName("btnImport")
+        # Btn Import Click Event
+        self.btnImport.clicked.connect(self.FrmImport_Click)
 
         # Btn Export
         self.btnExport = QtWidgets.QPushButton(self.centralwidget)

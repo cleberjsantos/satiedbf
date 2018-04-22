@@ -1,6 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from PyQt5 import QtCore, QtGui
+from .dbfread import DBF
+import os
+import glob
+import fnmatch
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -27,3 +31,76 @@ def _get_icon(src):
 def _get_img(src):
     img = QtGui.QPixmap(_fromUtf8(src))
     return img
+
+
+def ipat(pat):
+    """Convert glob pattern to case insensitive form."""
+
+    (dirname, pat) = os.path.split(pat)
+
+    # Convert '/path/to/test.fpt' => '/path/to/[Tt][Ee][Ss][Tt].[]' 
+    newpat = ''
+    for c in pat:
+        if c.isalpha:
+            u = c.upper()
+            l = c.lower()
+            if u != l:
+                newpat = newpat + '[' + u + l + ']'
+            else:
+                newpat += c
+        else:
+            newpat += c
+
+    newpat = os.path.join(dirname, newpat)
+
+    return newpat
+
+
+def ifnmatch(name, pat):
+    """Case insensitive version of fnmatch.fnmatch()"""
+    return fnmatch.fnmatch(name, ipat(pat))
+
+
+def iglob(pat):
+    """Case insensitive version of glob.glob()"""
+    return glob.glob(ipat(pat))
+
+
+def ifind(pat, ext=None):
+    """Look for a file in a case insensitive way.
+    Returns filename it a matching file was found, or None if it was not.
+    """
+
+    if ext:
+        pat = os.path.splitext(pat)[0] + ext
+
+    files = iglob(pat)
+    if files:
+        return files[0]  # Return an arbitrary file
+    else:
+        return None
+
+
+class DBFRead(object):
+    """ """
+
+    def __init__(self, filename, encoding='latin-1',
+                 char_decode_errors='strict'):
+
+        self.encoding = encoding
+        self.char_decode_errors = 'strict'
+        self.filename = ifind(filename)
+
+        if not self.filename:
+            raise DBFNotFound('could not find file {!r}'.format(filename))
+
+        else:
+            self.filename = filename
+
+        self.dbf = DBF(filename, encoding=self.encoding,
+                       char_decode_errors=self.char_decode_errors, load=True)
+
+    def parseDBF(self):
+        """ """
+        # https://github.com/olemb/dbfread
+        return [dict(i) for i in self.dbf.records]
