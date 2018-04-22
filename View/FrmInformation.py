@@ -72,6 +72,7 @@ class Ui_FrmInformation(object):
         self.textBrowser.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.textBrowser.setLineWidth(1)
         self.textBrowser.setStyleSheet("font-weight:400")
+        self.textBrowser.setOpenExternalLinks(True)
         self.textBrowser.setObjectName(_fromUtf8("textBrowser"))
 
         self.retranslateUi(FrmInformation)
