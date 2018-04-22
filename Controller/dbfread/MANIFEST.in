@@ -1,0 +1,9 @@
+include README.rst LICENSE run_tests.py
+include examples/dbf2sqlite
+recursive-include examples *.dbf *.py
+recursive-include testcases *.dbf *.FPT
+recursive-include docs *.bat
+recursive-include docs *.py
+recursive-include docs *.rst
+recursive-include docs Makefile
+include docs/_static/PLACEHOLDER
