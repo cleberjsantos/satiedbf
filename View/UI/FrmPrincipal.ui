@@ -264,7 +264,7 @@ image: url(Images/info.png);</string>
      <rect>
       <x>120</x>
       <y>560</y>
-      <width>41</width>
+      <width>80</width>
       <height>16</height>
      </rect>
     </property>

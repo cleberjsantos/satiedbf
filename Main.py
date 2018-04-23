@@ -1,5 +1,6 @@
+# -*- coding: utf-8 -*-
+from PyQt5 import QtCore
 from View.FrmPrincipal import *
-import sys
 
 
 if __name__ == "__main__":

@@ -85,11 +85,11 @@ class Ui_FrmInformation(object):
         self.labelVersion.setText(_translate("FrmInformation", "Version {}".format(VERSION)))
         self.textBrowser.setHtml(_translate("FrmInformation", "{}".format(ABOUT_TEXT)))
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    FrmInformation = QtWidgets.QDialog()
-    ui = Ui_FrmInformation()
-    ui.setupUi(FrmInformation)
-    FrmInformation.show()
-    sys.exit(app.exec_())
+#if __name__ == "__main__":
+#    import sys
+#    app = QtWidgets.QApplication(sys.argv)
+#    FrmInformation = QtWidgets.QDialog()
+#    ui = Ui_FrmInformation()
+#    ui.setupUi(FrmInformation)
+#    FrmInformation.show()
+#    sys.exit(app.exec_())

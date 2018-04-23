@@ -6,6 +6,7 @@ import os
 import glob
 import fnmatch
 
+
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
@@ -85,9 +86,10 @@ class DBFRead(object):
     """ """
 
     def __init__(self, filename, encoding='latin-1',
-                 char_decode_errors='strict'):
+                 char_decode_errors='strict', ignore_missing_memofile=True):
 
         self.encoding = encoding
+        self.ignore_missing_memofile = ignore_missing_memofile
         self.char_decode_errors = 'strict'
         self.filename = ifind(filename)
 
@@ -98,9 +100,24 @@ class DBFRead(object):
             self.filename = filename
 
         self.dbf = DBF(filename, encoding=self.encoding,
+                       ignore_missing_memofile=self.ignore_missing_memofile,
                        char_decode_errors=self.char_decode_errors, load=True)
+
+    @property
+    def dbf_records(self):
+        return self.dbf.records
 
     def parseDBF(self):
         """ """
         # https://github.com/olemb/dbfread
-        return [dict(i) for i in self.dbf.records]
+        return [dict(i) for i in self.dbf_records]
+
+
+def pyqt_pdb():
+    """ """
+    from pdb import set_trace
+
+    # Stop the QT check for gui event loop and put the break point
+    QtCore.pyqtRemoveInputHook()
+
+    set_trace()

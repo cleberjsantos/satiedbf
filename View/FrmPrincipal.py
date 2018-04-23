@@ -37,16 +37,30 @@ class Ui_FrmPrincipal(object):
         self.path, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Import file", "", "DBF files (*.dbf)", options=options)
 
         if self.path:
-            self.read_dbf = DBFRead(self.path, char_decode_errors='ignore')
+            self.read_dbf = DBFRead(self.path,
+                                    encoding=_fromUtf8(self.comboBoxEncoding.currentText()),
+                                    ignore_missing_memofile=self.checkBoxMemofile.isChecked(),
+                                    char_decode_errors='ignore')
             self.dbf = self.read_dbf.parseDBF()
 
-            # TODO Load DBF to Table Grid
+            # todo load dbf to table grid
             self.tableWidget.setRowCount(0)
-            for row_number , row_data in enumerate(self.dbf):
+
+            #from Controller.Utils import pyqt_pdb
+            #pyqt_pdb()
+
+            for row_number, row_data in enumerate(self.dbf):
                 self.tableWidget.insertRow(row_number)
                 for column_number, data in enumerate(row_data):
+                    self.tableWidget.setColumnCount(len(row_data))
+                    self.tableWidget.setHorizontalHeaderItem(column_number, QtWidgets.QTableWidgetItem(data))
                     self.tableWidget.setItem(row_number, column_number,
-                            QtWidgets.QTableWidgetItem(str(data)))
+                            QtWidgets.QTableWidgetItem(str(row_data[data])))
+            # Do the resize of the columns by content
+            self.tableWidget.resizeColumnsToContents()
+
+            # Total entries
+            self.labelTotalDataValue.setText(_fromUtf8(str(len(self.dbf))))
 
     def FrmInformation_Click(self):
         """ """
@@ -95,7 +109,6 @@ class Ui_FrmPrincipal(object):
         self.btnImport.setIconSize(QtCore.QSize(30, 30))
         self.btnImport.setObjectName(_fromUtf8("btnImport"))
         # Btn Import Click Event
-        #import pdb; pdb.set_trace()
         self.btnImport.clicked.connect(self.FrmImport_Click)
 
         # Btn Export
@@ -170,7 +183,6 @@ class Ui_FrmPrincipal(object):
         self.checkBoxMemofile.setChecked(True)
         self.checkBoxMemofile.setObjectName(_fromUtf8("checkBoxMemofile"))
 
-        #self.labelQuestionMemofile = QtWidgets.QLabel(self.groupBoxImport)
         self.labelQuestionMemofile = QtWidgets.QPushButton(self.groupBoxImport)
         self.labelQuestionMemofile.setGeometry(QtCore.QRect(190, 43, 16, 16))
         self.labelQuestionMemofile.setFont(font)
@@ -257,7 +269,7 @@ class Ui_FrmPrincipal(object):
         self.labelTotalData.setScaledContents(False)
         self.labelTotalData.setObjectName(_fromUtf8("labelTotalData"))
         self.labelTotalDataValue = QtWidgets.QLabel(self.centralwidget)
-        self.labelTotalDataValue.setGeometry(QtCore.QRect(120, 560, 41, 16))
+        self.labelTotalDataValue.setGeometry(QtCore.QRect(120, 560, 80, 16))
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
@@ -294,11 +306,11 @@ class Ui_FrmPrincipal(object):
         self.labelTotalDataValue.setText(_translate("FrmPrincipal", "0"))
 
 
-if __name__ == "__main__":
-    import sys
-    app = QtWidgets.QApplication(sys.argv)
-    FrmPrincipal = QtWidgets.QMainWindow()
-    ui = Ui_FrmPrincipal()
-    ui.setupUi(FrmPrincipal)
-    FrmPrincipal.show()
-    sys.exit(app.exec_())
+#if __name__ == "__main__":
+#    import sys
+#    app = QtWidgets.QApplication(sys.argv)
+#    FrmPrincipal = QtWidgets.QMainWindow()
+#    ui = Ui_FrmPrincipal()
+#    ui.setupUi(FrmPrincipal)
+#    FrmPrincipal.show()
+#    sys.exit(app.exec_())
