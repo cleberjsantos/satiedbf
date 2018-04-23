@@ -26,6 +26,9 @@ ABOUT_TEXT = """ <!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"
                     <p class=\"p_class\">Satie DBF Convert is available under under an MIT license and are developed as an open source project. This allows you to re-use the code freely, remixed in both commercial and non-commercial projects. The only requirement is to include the same license when distributing.</p>
                     <p class=\"p_class\">&nbsp;</p>
                     <p class=\"p_class\">This is the MIT license: <a href=\"http://www.opensource.org/licenses/mit-license.php\" target=\"_blank\">http://www.opensource.org/licenses/mit-license.php</a></p>
+                    <p class=\"p_class\"><br /></p>
+                    <p class=\"p_class\"><br /></p>
+                    <p align=\"right\" class=\"p_class\"><span style=\"color:#424242; font-size: 10px\">Created By </span><a href=\"mailto:cleber@cleberjsantos.com.br\"><span style=\" text-decoration: underline; color:#0000ff; font-size: 10px\">Cleber J Santos</span></a></p>
                    </body></html>
 """
 
