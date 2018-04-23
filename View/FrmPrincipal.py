@@ -12,16 +12,18 @@ from Controller.Utils import _fromUtf8, _translate
 from Controller.Utils import _get_icon, _get_img
 from Controller.Utils import DBFRead
 from Controller.config import ENCODING_SUPPORT
-
+from Controller.dbfread.exceptions import MissingMemoFile
 import webbrowser
 
 
 class Ui_FrmPrincipal(object):
     def dialog_critical(self, s):
-        dlg = QtWidgets.QMessageBox(self)
+        #from Controller.Utils import pyqt_pdb
+        #pyqt_pdb()
+        dlg = QtWidgets.QMessageBox()
         dlg.setText(s)
         dlg.setIcon(QtWidgets.QMessageBox.Critical)
-        dlg.show()
+        dlg.exec_()
 
     def question_url(self):
         webbrowser.open_new_tab('http://www.dbase.com/KnowledgeBase/int/db7_file_fmt.htm')
@@ -37,30 +39,32 @@ class Ui_FrmPrincipal(object):
         self.path, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Import file", "", "DBF files (*.dbf)", options=options)
 
         if self.path:
-            self.read_dbf = DBFRead(self.path,
-                                    encoding=_fromUtf8(self.comboBoxEncoding.currentText()),
-                                    ignore_missing_memofile=self.checkBoxMemofile.isChecked(),
-                                    char_decode_errors='ignore')
-            self.dbf = self.read_dbf.parseDBF()
+            try:
+                self.read_dbf = DBFRead(self.path,
+                                        encoding=_fromUtf8(self.comboBoxEncoding.currentText()),
+                                        ignore_missing_memofile=self.checkBoxMemofile.isChecked(),
+                                        char_decode_errors='ignore')
+                self.dbf = self.read_dbf.parseDBF()
 
-            # todo load dbf to table grid
-            self.tableWidget.setRowCount(0)
+                # todo load dbf to table grid
+                self.tableWidget.setRowCount(0)
 
-            #from Controller.Utils import pyqt_pdb
-            #pyqt_pdb()
+                for row_number, row_data in enumerate(self.dbf):
+                    self.tableWidget.insertRow(row_number)
+                    for column_number, data in enumerate(row_data):
+                        self.tableWidget.setColumnCount(len(row_data))
+                        self.tableWidget.setHorizontalHeaderItem(column_number, QtWidgets.QTableWidgetItem(data))
+                        self.tableWidget.setItem(row_number, column_number,
+                                QtWidgets.QTableWidgetItem(str(row_data[data])))
+                # Do the resize of the columns by content
+                self.tableWidget.resizeColumnsToContents()
 
-            for row_number, row_data in enumerate(self.dbf):
-                self.tableWidget.insertRow(row_number)
-                for column_number, data in enumerate(row_data):
-                    self.tableWidget.setColumnCount(len(row_data))
-                    self.tableWidget.setHorizontalHeaderItem(column_number, QtWidgets.QTableWidgetItem(data))
-                    self.tableWidget.setItem(row_number, column_number,
-                            QtWidgets.QTableWidgetItem(str(row_data[data])))
-            # Do the resize of the columns by content
-            self.tableWidget.resizeColumnsToContents()
-
-            # Total entries
-            self.labelTotalDataValue.setText(_fromUtf8(str(len(self.dbf))))
+                # Total entries
+                self.labelTotalDataValue.setText(_fromUtf8(str(len(self.dbf))))
+            except MissingMemoFile as e:
+                self.dialog_critical(_fromUtf8('Missing memo file'))
+            except Exception as e:
+                self.dialog_critical(_fromUtf8(e))
 
     def FrmInformation_Click(self):
         """ """
