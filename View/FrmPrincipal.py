@@ -30,6 +30,9 @@ class Ui_FrmPrincipal(object):
 
     def FrmImport_Click(self):
         """ """
+        if not self.groupBoxExport.isHidden():
+            self.groupBoxExport.hide()
+
         # self.path holds the path of the currently open file.
         # If none, we haven't got a file open yet (or creating new).
         self.path = None
@@ -78,6 +81,10 @@ class Ui_FrmPrincipal(object):
             except Exception as e:
                 self.dialog_critical(_fromUtf8(str(e)))
 
+    def Show_ExpOpt(self):
+        """ """
+        self.groupBoxExport.show()
+
     def FrmInformation_Click(self):
         """ """
         self.frmInformation = QtWidgets.QMainWindow()
@@ -90,6 +97,8 @@ class Ui_FrmPrincipal(object):
         icon = _get_icon("Images/satiedbfIcon.png")
         iconImport = _get_icon("Images/import.png")
         iconExport = _get_icon("Images/export.png")
+        iconCsv = _get_icon("Images/csv.png")
+        iconPdf = _get_icon("Images/pdf.png")
         iconInfo = _get_icon("Images/info.png")
         iconQuestion = _get_icon("Images/question.png")
 
@@ -104,7 +113,7 @@ class Ui_FrmPrincipal(object):
         FrmPrincipal.setAcceptDrops(False)
         FrmPrincipal.setStyleSheet("background-color: #eee;")
 
-        # Deault Font conf
+        # Default Font conf
         font = QtGui.QFont()
         font.setFamily("Arial")
         font.setPointSize(10)
@@ -122,7 +131,7 @@ class Ui_FrmPrincipal(object):
                                      "min-width: 80px;\n"
                                      "")
         self.btnImport.setIcon(iconImport)
-        self.btnImport.setIconSize(QtCore.QSize(30, 30))
+        self.btnImport.setIconSize(QtCore.QSize(40, 40))
         self.btnImport.setObjectName(_fromUtf8("btnImport"))
         # Btn Import Click Event
         self.btnImport.clicked.connect(self.FrmImport_Click)
@@ -137,9 +146,59 @@ class Ui_FrmPrincipal(object):
                                      "min-width: 80px;\n"
                                      "")
         self.btnExport.setIcon(iconExport)
-        self.btnExport.setIconSize(QtCore.QSize(30, 30))
+        self.btnExport.setIconSize(QtCore.QSize(40, 40))
         self.btnExport.setShortcut("")
         self.btnExport.setObjectName(_fromUtf8("btnExport"))
+        # Btn Export Click Event
+        self.btnExport.clicked.connect(self.Show_ExpOpt)
+
+        font.setPointSize(10)
+        # Export Actions
+        self.groupBoxExport = QtWidgets.QGroupBox(self.centralwidget)
+        self.groupBoxExport.setEnabled(True)
+        self.groupBoxExport.setFont(font)
+        self.groupBoxExport.setGeometry(QtCore.QRect(370, 20, 221, 81))
+        self.groupBoxExport.setStyleSheet("QGroupBox{\n"
+                                          "  background-color: transparent;\n"
+                                          "  background-clip: margin;\n"
+                                          "  border: 1px solid #777;\n"
+                                          "  border-radius: 4px;\n"
+                                          "  margin-top: 10px;\n"
+                                          "  padding-top: 4px;}\n"
+                                          "QGroupBox::title{\n"
+                                          "  padding: 2px 8px;\n"
+                                          "  subcontrol-origin: margin;\n"
+                                          "  subcontrol-position: top center;\n"
+                                          "  color: #555;}\n")
+        self.groupBoxExport.setObjectName(_fromUtf8("groupBoxExport"))
+
+        # Default is Hide
+        if not self.groupBoxExport.isHidden():
+            self.groupBoxExport.hide()
+
+        # Bnt CSV
+        self.btnExpCSV = QtWidgets.QPushButton(self.groupBoxExport)
+        self.btnExpCSV.setGeometry(QtCore.QRect(20, 20, 82, 51))
+        self.btnExpCSV.setStyleSheet("border: 1px solid #8f8f91;\n"
+                                     "border-radius: 6px;\n"
+                                     "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde);\n"
+                                     "min-width: 80px;\n")
+        self.btnExpCSV.setText("")
+        self.btnExpCSV.setIcon(iconCsv)
+        self.btnExpCSV.setIconSize(QtCore.QSize(40, 40))
+        self.btnExpCSV.setObjectName(_fromUtf8("btnExpCSV"))
+
+        # Bnt PDF
+        self.btnExpPDF = QtWidgets.QPushButton(self.groupBoxExport)
+        self.btnExpPDF.setGeometry(QtCore.QRect(120, 20, 82, 51))
+        self.btnExpPDF.setStyleSheet("border: 1px solid #8f8f91;\n"
+                                     "border-radius: 6px;\n"
+                                     "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde);\n"
+                                     "min-width: 80px;")
+        self.btnExpPDF.setText("")
+        self.btnExpPDF.setIcon(iconPdf)
+        self.btnExpPDF.setIconSize(QtCore.QSize(40, 40))
+        self.btnExpPDF.setObjectName(_fromUtf8("btnExpPDF"))
 
         # Bnt Information
         self.btnInfo = QtWidgets.QPushButton(self.centralwidget)
@@ -296,6 +355,7 @@ class Ui_FrmPrincipal(object):
         self.columnView.raise_()
         self.btnImport.raise_()
         self.btnExport.raise_()
+        self.groupBoxExport.raise_()
         self.btnInfo.raise_()
         self.labelDbfText.raise_()
         self.groupBoxImport.raise_()
@@ -317,6 +377,7 @@ class Ui_FrmPrincipal(object):
         self.groupBoxImport.setTitle(_translate("FrmPrincipal", "Import options"))
         self.checkBoxMemofile.setText(_translate("FrmPrincipal", "ignore missing memofile"))
         self.labelEncoding.setText(_translate("FrmPrincipal", "Encoding"))
+        self.groupBoxExport.setTitle(_translate("FrmPrincipal", "Export To"))
         self.tableWidget.setSortingEnabled(True)
         self.labelTotalData.setText(_translate("FrmPrincipal", "Total data"))
         self.labelTotalDataValue.setText(_translate("FrmPrincipal", "0"))
