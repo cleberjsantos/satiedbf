@@ -407,12 +407,12 @@ QComboBox::down-arrow:on {
      </property>
      <item>
       <property name="text">
-       <string notr="true">utf8</string>
+       <string notr="true">latin1</string>
       </property>
      </item>
      <item>
       <property name="text">
-       <string notr="true">latin-1</string>
+       <string notr="true">utf8</string>
       </property>
      </item>
      <item>

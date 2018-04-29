@@ -11,15 +11,15 @@ from View.FrmInformation import Ui_FrmInformation
 from Controller.Utils import _fromUtf8, _translate
 from Controller.Utils import _get_icon, _get_img
 from Controller.Utils import DBFRead
+from Controller.Utils import pyqt_pdb
 from Controller.config import ENCODING_SUPPORT
 from Controller.dbfread.exceptions import MissingMemoFile
+from datetime import date
 import webbrowser
 
 
 class Ui_FrmPrincipal(object):
     def dialog_critical(self, s):
-        #from Controller.Utils import pyqt_pdb
-        #pyqt_pdb()
         dlg = QtWidgets.QMessageBox()
         dlg.setText(s)
         dlg.setIcon(QtWidgets.QMessageBox.Critical)
@@ -44,27 +44,39 @@ class Ui_FrmPrincipal(object):
                                         encoding=_fromUtf8(self.comboBoxEncoding.currentText()),
                                         ignore_missing_memofile=self.checkBoxMemofile.isChecked(),
                                         char_decode_errors='ignore')
+
                 self.dbf = self.read_dbf.parseDBF()
 
                 # todo load dbf to table grid
                 self.tableWidget.setRowCount(0)
+                self.tableWidget.insertRow(0)
 
                 for row_number, row_data in enumerate(self.dbf):
-                    self.tableWidget.insertRow(row_number)
+                    r_number = int(row_number + 1)
+                    self.tableWidget.insertRow(r_number)
+
                     for column_number, data in enumerate(row_data):
                         self.tableWidget.setColumnCount(len(row_data))
-                        self.tableWidget.setHorizontalHeaderItem(column_number, QtWidgets.QTableWidgetItem(data))
-                        self.tableWidget.setItem(row_number, column_number,
-                                QtWidgets.QTableWidgetItem(str(row_data[data])))
+
+                        self.tableWidget.setItem(0, column_number,
+                                                 QtWidgets.QTableWidgetItem(data))
+
+                        rData = row_data[data]
+                        if isinstance(row_data[data], date):
+                            rData = str(row_data[data])
+
+                        self.tableWidget.setItem(r_number, column_number,
+                                                     QtWidgets.QTableWidgetItem(rData))
                 # Do the resize of the columns by content
                 self.tableWidget.resizeColumnsToContents()
 
                 # Total entries
-                self.labelTotalDataValue.setText(_fromUtf8(str(len(self.dbf))))
+                totalEntries = str(self.read_dbf.meta_data['numrecords'])
+                self.labelTotalDataValue.setText(totalEntries)
             except MissingMemoFile as e:
                 self.dialog_critical(_fromUtf8('Missing memo file'))
             except Exception as e:
-                self.dialog_critical(_fromUtf8(e))
+                self.dialog_critical(_fromUtf8(str(e)))
 
     def FrmInformation_Click(self):
         """ """

@@ -32,4 +32,4 @@ ABOUT_TEXT = """ <!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"
                    </body></html>
 """
 
-ENCODING_SUPPORT = ('utf8', 'latin-1', 'cp850')
+ENCODING_SUPPORT = ('latin1', 'cp850', 'utf8')

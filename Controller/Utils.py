@@ -5,7 +5,7 @@ from .dbfread import DBF
 import os
 import glob
 import fnmatch
-
+from Controller.caches import memoize
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -85,7 +85,7 @@ def ifind(pat, ext=None):
 class DBFRead(object):
     """ """
 
-    def __init__(self, filename, encoding='latin-1',
+    def __init__(self, filename, encoding='latin1',
                  char_decode_errors='strict', ignore_missing_memofile=True):
 
         self.encoding = encoding
@@ -101,12 +101,27 @@ class DBFRead(object):
 
         self.dbf = DBF(filename, encoding=self.encoding,
                        ignore_missing_memofile=self.ignore_missing_memofile,
-                       char_decode_errors=self.char_decode_errors, load=True)
+                       char_decode_errors=self.char_decode_errors, load=False)
+
+    @property
+    def meta_data(self):
+        header = self.dbf.header.__dict__
+
+        header['date'] = str(self.dbf.date)
+        header['filename'] = self.dbf.filename
+        header['name'] = self.dbf.name
+
+        return header
+
+    @property
+    def fields(self):
+        return self.dbf.field_names
 
     @property
     def dbf_records(self):
         return self.dbf.records
 
+    @memoize
     def parseDBF(self):
         """ """
         # https://github.com/olemb/dbfread
@@ -119,5 +134,4 @@ def pyqt_pdb():
 
     # Stop the QT check for gui event loop and put the break point
     QtCore.pyqtRemoveInputHook()
-
     set_trace()
