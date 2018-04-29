@@ -1,5 +1,5 @@
 Makefile
-.DS_Store
+*.DS_Store
 build/
 __pycache__/
 *.py[cod]
@@ -18,7 +18,7 @@ parts/
 sdist/
 var/
 *.egg-info/
-.installed.cfg
+*.installed.cfg
 *.egg
 *.log
 
@@ -34,11 +34,12 @@ pip-delete-this-directory.txt
 
 # Unit test / coverage reports
 htmlcov/
-.tox/
-.coverage
-.cache
+*.tox/
+*.coverage
+*.cache
 nosetests.xml
 coverage.xml
+*.cprof
 
 # Translations
 *.mo
