@@ -57,8 +57,8 @@ min-width: 80px;
     </property>
     <property name="iconSize">
      <size>
-      <width>30</width>
-      <height>30</height>
+      <width>40</width>
+      <height>40</height>
      </size>
     </property>
    </widget>
@@ -93,8 +93,8 @@ background-size: 30px 30px;</string>
     </property>
     <property name="iconSize">
      <size>
-      <width>30</width>
-      <height>30</height>
+      <width>40</width>
+      <height>40</height>
      </size>
     </property>
     <property name="shortcut">
@@ -476,6 +476,101 @@ QComboBox::down-arrow:on {
      </property>
     </widget>
    </widget>
+   <widget class="QGroupBox" name="groupBoxExport">
+    <property name="enabled">
+     <bool>true</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>370</x>
+      <y>20</y>
+      <width>221</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">QGroupBox
+{
+  background-color: transparent;
+  background-clip: margin;
+  border: 1px solid #777;
+  border-radius: 4px;
+  margin-top: 10px;
+  padding-top: 4px;
+}
+
+QGroupBox::title
+{
+  padding: 2px 8px;
+  subcontrol-origin: margin;
+  subcontrol-position: top center;
+  color: #555;
+}</string>
+    </property>
+    <property name="title">
+     <string>Export To</string>
+    </property>
+    <widget class="QPushButton" name="pushButton">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>20</y>
+       <width>82</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: 1px solid #8f8f91;
+border-radius: 6px;
+background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde);
+min-width: 80px;
+background-size: 30px 30px;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>../../Images/csv.png</normaloff>../../Images/csv.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pushButton_2">
+     <property name="geometry">
+      <rect>
+       <x>120</x>
+       <y>20</y>
+       <width>82</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: 1px solid #8f8f91;
+border-radius: 6px;
+background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde);
+min-width: 80px;
+background-size: 30px 30px;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>../../Images/pdf.png</normaloff>../../Images/pdf.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+    </widget>
+   </widget>
    <zorder>columnView</zorder>
    <zorder>btnImport</zorder>
    <zorder>btnExport</zorder>
@@ -485,6 +580,7 @@ QComboBox::down-arrow:on {
    <zorder>labelTotalData</zorder>
    <zorder>labelTotalDataValue</zorder>
    <zorder>groupBoxImport</zorder>
+   <zorder>groupBoxExport</zorder>
   </widget>
  </widget>
  <resources/>
