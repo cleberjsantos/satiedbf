@@ -81,8 +81,7 @@ min-width: 80px;
      <string notr="true">border: 1px solid #8f8f91;
 border-radius: 6px;
 background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde);
-min-width: 80px;
-background-size: 30px 30px;</string>
+min-width: 80px;</string>
     </property>
     <property name="text">
      <string extracomment="Export">Export</string>
@@ -208,7 +207,6 @@ background-size: 30px 30px;</string>
 border-radius: 6px;
 background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #E1F5A9, stop: 1 #cedf9a);
 min-width: 80px;
-background-size: 30px 30px;
 image: url(Images/info.png);</string>
     </property>
     <property name="text">
@@ -488,6 +486,12 @@ QComboBox::down-arrow:on {
       <height>81</height>
      </rect>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
     <property name="styleSheet">
      <string notr="true">QGroupBox
 {
@@ -510,7 +514,7 @@ QGroupBox::title
     <property name="title">
      <string>Export To</string>
     </property>
-    <widget class="QPushButton" name="pushButton">
+    <widget class="QPushButton" name="btnExpCSV">
      <property name="geometry">
       <rect>
        <x>20</x>
@@ -523,8 +527,7 @@ QGroupBox::title
       <string notr="true">border: 1px solid #8f8f91;
 border-radius: 6px;
 background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde);
-min-width: 80px;
-background-size: 30px 30px;</string>
+min-width: 80px;</string>
      </property>
      <property name="text">
       <string/>
@@ -540,7 +543,7 @@ background-size: 30px 30px;</string>
       </size>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_2">
+    <widget class="QPushButton" name="btnExpPDF">
      <property name="geometry">
       <rect>
        <x>120</x>
@@ -553,8 +556,7 @@ background-size: 30px 30px;</string>
       <string notr="true">border: 1px solid #8f8f91;
 border-radius: 6px;
 background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde);
-min-width: 80px;
-background-size: 30px 30px;</string>
+min-width: 80px;</string>
      </property>
      <property name="text">
       <string/>
