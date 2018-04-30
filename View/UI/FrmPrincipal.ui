@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>FrmPrincipal</class>
  <widget class="QMainWindow" name="FrmPrincipal">
+  <property name="windowModality">
+   <enum>Qt::NonModal</enum>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -272,6 +275,12 @@ image: url(Images/info.png);</string>
       <verstretch>0</verstretch>
      </sizepolicy>
     </property>
+    <property name="font">
+     <font>
+      <family>Arial</family>
+      <pointsize>10</pointsize>
+     </font>
+    </property>
     <property name="text">
      <string>0</string>
     </property>
@@ -473,11 +482,6 @@ QComboBox::down-arrow:on {
       <string notr="true"/>
      </property>
     </widget>
-    <zorder>checkBoxMemofile</zorder>
-    <zorder>comboBoxEncoding</zorder>
-    <zorder>labelEncoding</zorder>
-    <zorder>labelQuestionMemofile</zorder>
-    <zorder>btnInfo</zorder>
    </widget>
    <widget class="QGroupBox" name="groupBoxExport">
     <property name="enabled">
@@ -612,10 +616,6 @@ min-width: 80px;</string>
       </size>
      </property>
     </widget>
-    <zorder>btnExpCSV</zorder>
-    <zorder>btnExpPDF</zorder>
-    <zorder>btnInfo</zorder>
-    <zorder>btnPrint</zorder>
    </widget>
    <zorder>columnView</zorder>
    <zorder>btnImport</zorder>

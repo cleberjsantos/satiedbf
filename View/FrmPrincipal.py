@@ -130,7 +130,7 @@ class Ui_FrmPrincipal(object):
                         item = self.tableWidget.item(r_item, column)
                         if item is not None:
                             rowdata.append(
-                                _fromUtf8(item.text()))
+                                _fromUtf8( unicode(item.text()).encode("utf-8") ))
                         else:
                             rowdata.append('')
                     self.data.append(rowdata)
