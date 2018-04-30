@@ -98,6 +98,9 @@ class Ui_FrmPrincipal(object):
         """ """
         self.groupBoxExport.show()
 
+    def Print(self):
+        """ """
+
     def Convert_Csv(self):
         """ """
         if self.tableWidget.rowCount() < 1:
@@ -147,6 +150,7 @@ class Ui_FrmPrincipal(object):
         icon = _get_icon("Images/satiedbfIcon.png")
         iconImport = _get_icon("Images/import.png")
         iconExport = _get_icon("Images/export.png")
+        iconPrint = _get_icon("Images/print.png")
         iconCsv = _get_icon("Images/csv.png")
         iconPdf = _get_icon("Images/pdf.png")
         iconInfo = _get_icon("Images/info.png")
@@ -207,7 +211,7 @@ class Ui_FrmPrincipal(object):
         self.groupBoxExport = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBoxExport.setEnabled(True)
         self.groupBoxExport.setFont(font)
-        self.groupBoxExport.setGeometry(QtCore.QRect(370, 20, 221, 81))
+        self.groupBoxExport.setGeometry(QtCore.QRect(340, 20, 281, 81))
         self.groupBoxExport.setStyleSheet("QGroupBox{\n"
                                           "  background-color: transparent;\n"
                                           "  background-clip: margin;\n"
@@ -226,9 +230,23 @@ class Ui_FrmPrincipal(object):
         if not self.groupBoxExport.isHidden():
             self.groupBoxExport.hide()
 
+        # Bnt Print
+        self.btnPrint = QtWidgets.QPushButton(self.groupBoxExport)
+        self.btnPrint.setGeometry(QtCore.QRect(10, 20, 82, 51))
+        self.btnPrint.setStyleSheet("border: 1px solid #8f8f91;\n"
+                                     "border-radius: 6px;\n"
+                                     "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde);\n"
+                                     "min-width: 80px;\n")
+        self.btnPrint.setText("")
+        self.btnPrint.setIcon(iconPrint)
+        self.btnPrint.setIconSize(QtCore.QSize(40, 40))
+        self.btnPrint.setObjectName(_fromUtf8("btnPrint"))
+        # Btn Print Click Event
+        self.btnPrint.clicked.connect(self.Print)
+
         # Bnt CSV
         self.btnExpCSV = QtWidgets.QPushButton(self.groupBoxExport)
-        self.btnExpCSV.setGeometry(QtCore.QRect(20, 20, 82, 51))
+        self.btnExpCSV.setGeometry(QtCore.QRect(100, 20, 82, 51))
         self.btnExpCSV.setStyleSheet("border: 1px solid #8f8f91;\n"
                                      "border-radius: 6px;\n"
                                      "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde);\n"
@@ -242,7 +260,7 @@ class Ui_FrmPrincipal(object):
 
         # Bnt PDF
         self.btnExpPDF = QtWidgets.QPushButton(self.groupBoxExport)
-        self.btnExpPDF.setGeometry(QtCore.QRect(120, 20, 82, 51))
+        self.btnExpPDF.setGeometry(QtCore.QRect(190, 20, 82, 51))
         self.btnExpPDF.setStyleSheet("border: 1px solid #8f8f91;\n"
                                      "border-radius: 6px;\n"
                                      "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde);\n"
@@ -410,6 +428,7 @@ class Ui_FrmPrincipal(object):
         self.groupBoxExport.raise_()
         self.btnInfo.raise_()
         self.labelDbfText.raise_()
+        self.btnPrint.raise_()
         self.groupBoxImport.raise_()
         self.tableWidget.raise_()
         self.labelTotalData.raise_()

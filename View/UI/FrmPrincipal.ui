@@ -473,6 +473,11 @@ QComboBox::down-arrow:on {
       <string notr="true"/>
      </property>
     </widget>
+    <zorder>checkBoxMemofile</zorder>
+    <zorder>comboBoxEncoding</zorder>
+    <zorder>labelEncoding</zorder>
+    <zorder>labelQuestionMemofile</zorder>
+    <zorder>btnInfo</zorder>
    </widget>
    <widget class="QGroupBox" name="groupBoxExport">
     <property name="enabled">
@@ -480,9 +485,9 @@ QComboBox::down-arrow:on {
     </property>
     <property name="geometry">
      <rect>
-      <x>370</x>
+      <x>340</x>
       <y>20</y>
-      <width>221</width>
+      <width>281</width>
       <height>81</height>
      </rect>
     </property>
@@ -517,7 +522,7 @@ QGroupBox::title
     <widget class="QPushButton" name="btnExpCSV">
      <property name="geometry">
       <rect>
-       <x>20</x>
+       <x>100</x>
        <y>20</y>
        <width>82</width>
        <height>51</height>
@@ -546,7 +551,7 @@ min-width: 80px;</string>
     <widget class="QPushButton" name="btnExpPDF">
      <property name="geometry">
       <rect>
-       <x>120</x>
+       <x>190</x>
        <y>20</y>
        <width>82</width>
        <height>51</height>
@@ -572,6 +577,45 @@ min-width: 80px;</string>
       </size>
      </property>
     </widget>
+    <widget class="QPushButton" name="btnPrint">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>20</y>
+       <width>82</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>10</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">border: 1px solid #8f8f91;
+border-radius: 6px;
+background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde);
+min-width: 80px;</string>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+     <property name="icon">
+      <iconset>
+       <normaloff>../../Images/print.png</normaloff>../../Images/print.png</iconset>
+     </property>
+     <property name="iconSize">
+      <size>
+       <width>40</width>
+       <height>40</height>
+      </size>
+     </property>
+    </widget>
+    <zorder>btnExpCSV</zorder>
+    <zorder>btnExpPDF</zorder>
+    <zorder>btnInfo</zorder>
+    <zorder>btnPrint</zorder>
    </widget>
    <zorder>columnView</zorder>
    <zorder>btnImport</zorder>
