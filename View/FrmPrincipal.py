@@ -8,9 +8,10 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from View.FrmInformation import Ui_FrmInformation
-from Controller.Utils import _fromUtf8, _translate
+from Controller.Utils import _fromUtf8, _translate, resolve
 from Controller.Utils import _get_icon, _get_img
 from Controller.Utils import DBFRead
+from Controller.dbf2csv import Tocsv
 from Controller.Utils import pyqt_pdb
 from Controller.config import ENCODING_SUPPORT
 from Controller.dbfread.exceptions import MissingMemoFile
@@ -19,10 +20,20 @@ import webbrowser
 
 
 class Ui_FrmPrincipal(object):
-    def dialog_critical(self, s):
+    def __init__(self):
+        super(Ui_FrmPrincipal, self).__init__()
+        self.isChanged = False
+        self.fileName = ""
+        # self.path holds the path of the currently open file.
+        # If none, we haven't got a file open yet (or creating new).
+        self.path = None
+
+    def dialog_msg(self, text='', icon='Information'):
+        """ NoIcon, Question, Information, Warning, Critical """
         dlg = QtWidgets.QMessageBox()
-        dlg.setText(s)
-        dlg.setIcon(QtWidgets.QMessageBox.Critical)
+        dlg.setText(text)
+        dlg.setWindowTitle(icon)
+        dlg.setIcon(resolve('PyQt5.QtWidgets.QMessageBox.{}'.format(icon)))
         dlg.exec_()
 
     def question_url(self):
@@ -33,15 +44,14 @@ class Ui_FrmPrincipal(object):
         if not self.groupBoxExport.isHidden():
             self.groupBoxExport.hide()
 
-        # self.path holds the path of the currently open file.
-        # If none, we haven't got a file open yet (or creating new).
-        self.path = None
         options = QtWidgets.QFileDialog.Options()
         options |= QtWidgets.QFileDialog.DontUseNativeDialog
 
         self.path, _ = QtWidgets.QFileDialog.getOpenFileName(None, "Import file", "", "DBF files (*.dbf)", options=options)
 
         if self.path:
+            self.fileName = str(self.path.split('/')[-1])
+
             try:
                 self.read_dbf = DBFRead(self.path,
                                         encoding=_fromUtf8(self.comboBoxEncoding.currentText()),
@@ -55,14 +65,15 @@ class Ui_FrmPrincipal(object):
                 self.tableWidget.insertRow(0)
 
                 for row_number, row_data in enumerate(self.dbf):
-                    r_number = int(row_number + 1)
+                    r_number = int(row_number)
                     self.tableWidget.insertRow(r_number)
 
                     for column_number, data in enumerate(row_data):
                         self.tableWidget.setColumnCount(len(row_data))
 
-                        self.tableWidget.setItem(0, column_number,
-                                                 QtWidgets.QTableWidgetItem(data))
+                        # Header
+                        self.tableWidget.setHorizontalHeaderItem(column_number,
+                                                  QtWidgets.QTableWidgetItem(data))
 
                         rData = row_data[data]
                         if isinstance(row_data[data], date):
@@ -77,13 +88,52 @@ class Ui_FrmPrincipal(object):
                 totalEntries = str(self.read_dbf.meta_data['numrecords'])
                 self.labelTotalDataValue.setText(totalEntries)
             except MissingMemoFile as e:
-                self.dialog_critical(_fromUtf8('Missing memo file'))
+                self.dialog_msg(text=_fromUtf8('Missing memo file'),
+                                icon='Critical')
             except Exception as e:
-                self.dialog_critical(_fromUtf8(str(e)))
+                self.dialog_msg(text=_fromUtf8(str(e)),
+                                icon='Critical')
 
     def Show_ExpOpt(self):
         """ """
         self.groupBoxExport.show()
+
+    def Convert_Csv(self):
+        """ """
+        if self.tableWidget.rowCount() < 1:
+            self.dialog_msg(text=_fromUtf8('Missing Data'),
+                            icon='Critical')
+        else:
+            if self.fileName.endswith('.dbf'):
+                self.fileName = self.fileName.replace('.dbf',
+                                                      '.csv')
+
+            filePath, _ = QtWidgets.QFileDialog.getSaveFileName(None,
+                                                                "Save File",
+                                                                self.fileName,
+                                                                "CSV Files (*.csv)")
+            if filePath:
+                self.header = []
+                self.data = []
+                columncount = range(self.tableWidget.columnCount())
+                rowcount = range(self.tableWidget.rowCount())
+
+                for c_item in columncount:
+                    self.header.append(self.tableWidget.horizontalHeaderItem(c_item).text())
+
+                for r_item in rowcount:
+                    rowdata = []
+                    for column in columncount:
+                        item = self.tableWidget.item(r_item, column)
+                        if item is not None:
+                            rowdata.append(
+                                _fromUtf8(item.text()))
+                        else:
+                            rowdata.append('')
+                    self.data.append(rowdata)
+
+                Tocsv(filePath, header=self.header, data=self.data)
+                self.dialog_msg(text=_fromUtf8('CSV exported!'))
 
     def FrmInformation_Click(self):
         """ """
@@ -187,6 +237,8 @@ class Ui_FrmPrincipal(object):
         self.btnExpCSV.setIcon(iconCsv)
         self.btnExpCSV.setIconSize(QtCore.QSize(40, 40))
         self.btnExpCSV.setObjectName(_fromUtf8("btnExpCSV"))
+        # Btn Export CSV Click Event
+        self.btnExpCSV.clicked.connect(self.Convert_Csv)
 
         # Bnt PDF
         self.btnExpPDF = QtWidgets.QPushButton(self.groupBoxExport)
