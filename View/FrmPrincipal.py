@@ -128,8 +128,13 @@ class Ui_FrmPrincipal(QtCore.QObject):
                     for column in columncount:
                         item = self.tableWidget.item(r_item, column)
                         if item is not None:
+                            txt = item.text()
+                            if isinstance(txt, str):
+                                text = txt
+                            else:
+                                text = txt.encode("utf-8")
                             rowdata.append(
-                                _fromUtf8( unicode(item.text()).encode("utf-8") ))
+                                _fromUtf8(text))
                         else:
                             rowdata.append('')
                     self.data.append(rowdata)
