@@ -6,7 +6,7 @@
 #
 # WARNING! All changes made in this file will be lost!
 
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets, QtPrintSupport
 from View.FrmInformation import Ui_FrmInformation
 from Controller.Utils import (_fromUtf8, _translate, resolve,
                               _get_icon, _get_img, DBFRead,
@@ -21,7 +21,7 @@ import webbrowser
 class Ui_FrmPrincipal(QtCore.QObject):
     def __init__(self, parent=None):
         super(Ui_FrmPrincipal, self).__init__(parent)
-        self.isChanged = False
+        self.isTableEmpty = True
         self.fileName = ""
         # self.path holds the path of the currently open file.
         # If none, we haven't got a file open yet (or creating new).
@@ -86,6 +86,7 @@ class Ui_FrmPrincipal(QtCore.QObject):
                 # Total entries
                 totalEntries = str(self.read_dbf.meta_data['numrecords'])
                 self.labelTotalDataValue.setText(totalEntries)
+                self.isTableEmpty = False
             except MissingMemoFile as e:
                 self.dialog_msg(text=_fromUtf8('Missing memo file'),
                                 icon='Critical')
@@ -99,10 +100,50 @@ class Ui_FrmPrincipal(QtCore.QObject):
 
     def Print(self):
         """ """
+        if self.isTableEmpty:
+            self.dialog_msg(text=_fromUtf8('Missing Data'),
+                            icon='Critical')
+        else:
+            dialog = QtPrintSupport.QPrintDialog()
+            if dialog.exec_() == QtWidgets.QDialog.Accepted:
+                self.handlePaintRequest(dialog.printer())
+                self.dialog_msg(text=_fromUtf8('Document Printed'))
+
+    def handlePaintRequest(self, printer):
+        # find empty cells
+        count = self.tableWidget.rowCount()
+        for row in range(count):
+            for column in range(self.tableWidget.columnCount()):
+                myitem = self.tableWidget.item(row,column)
+                if myitem is None:
+                    item = QtWidgets.QTableWidgetItem("")
+                    self.tableWidget.setItem(row, column, item)
+        #printer.setDocName(self.tablename)
+        document = QtGui.QTextDocument()
+        cursor = QtGui.QTextCursor(document)
+        model = self.tableWidget.model()
+        tableFormat = QtGui.QTextTableFormat()
+        tableFormat.setAlignment(QtCore.Qt.AlignHCenter)
+        tableFormat.setBorder(0.1)
+        tableFormat.setBorderStyle(3)
+        tableFormat.setCellPadding(4)
+        tableFormat.setCellSpacing(0)
+        tableFormat.setTopMargin(0)
+        table = cursor.insertTable(model.rowCount() + 1, model.columnCount(), tableFormat)
+        for column in range(table.columns()):
+            if not self.tableWidget.horizontalHeaderItem(column) is None:
+                cursor.insertText(self.tableWidget.horizontalHeaderItem(column).text())
+                cursor.movePosition(QtGui.QTextCursor.NextCell)
+        for row in range(count):
+            for column in range(table.columns()):
+                cursor.insertText(self.tableWidget.item(row, column).text())
+                cursor.movePosition(QtGui.QTextCursor.NextCell)
+        document.print_(printer)
+
 
     def Convert_Csv(self):
         """ """
-        if self.tableWidget.rowCount() < 1:
+        if self.isTableEmpty:
             self.dialog_msg(text=_fromUtf8('Missing Data'),
                             icon='Critical')
         else:
