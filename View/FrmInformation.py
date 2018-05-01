@@ -11,7 +11,7 @@ from Controller.Utils import _fromUtf8, _translate, _get_icon, _get_img
 from Controller.config import VERSION, ABOUT_TEXT
 
 
-class Ui_FrmInformation(object):
+class Ui_FrmInformation(QtCore.QObject):
     def setupUi(self, FrmInformation):
         # Icons
         icon = _get_icon("Images/satiedbfIcon.png")

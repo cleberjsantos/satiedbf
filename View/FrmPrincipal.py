@@ -8,20 +8,19 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 from View.FrmInformation import Ui_FrmInformation
-from Controller.Utils import _fromUtf8, _translate, resolve
-from Controller.Utils import _get_icon, _get_img
-from Controller.Utils import DBFRead
+from Controller.Utils import (_fromUtf8, _translate, resolve,
+                              _get_icon, _get_img, DBFRead,
+                              pyqt_pdb)
 from Controller.dbf2csv import Tocsv
-from Controller.Utils import pyqt_pdb
 from Controller.config import ENCODING_SUPPORT
 from Controller.dbfread.exceptions import MissingMemoFile
 from datetime import date
 import webbrowser
 
 
-class Ui_FrmPrincipal(object):
-    def __init__(self):
-        super(Ui_FrmPrincipal, self).__init__()
+class Ui_FrmPrincipal(QtCore.QObject):
+    def __init__(self, parent=None):
+        super(Ui_FrmPrincipal, self).__init__(parent)
         self.isChanged = False
         self.fileName = ""
         # self.path holds the path of the currently open file.
@@ -339,6 +338,7 @@ class Ui_FrmPrincipal(object):
         self.labelQuestionMemofile.setIconSize(QtCore.QSize(16, 16))
         self.labelQuestionMemofile.setStyleSheet("QPushButton {   background-color: transparent; border: none; }")
         self.labelQuestionMemofile.setObjectName(_fromUtf8("labelQuestionMemofile"))
+        self.labelQuestionMemofile.setToolTip('Help about Memofile')
         # Action to Label Questin clickable
         self.labelQuestionMemofile.clicked.connect(self.question_url)
 
@@ -450,6 +450,9 @@ class Ui_FrmPrincipal(object):
         self.labelEncoding.setText(_translate("FrmPrincipal", "Encoding"))
         self.groupBoxExport.setTitle(_translate("FrmPrincipal", "Export To"))
         self.tableWidget.setSortingEnabled(True)
+        self.tableWidget.setDragDropMode(QtWidgets.QAbstractItemView.InternalMove)
+        self.tableWidget.setAcceptDrops(True)
+        self.tableWidget.setDragDropOverwriteMode(False)
         self.labelTotalData.setText(_translate("FrmPrincipal", "Total data"))
         self.labelTotalDataValue.setText(_translate("FrmPrincipal", "0"))
 
