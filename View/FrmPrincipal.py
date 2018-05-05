@@ -197,7 +197,6 @@ class Ui_FrmPrincipal(QtCore.QObject):
         iconExport = _get_icon("Images/export.png")
         iconPrint = _get_icon("Images/print.png")
         iconCsv = _get_icon("Images/csv.png")
-        iconPdf = _get_icon("Images/pdf.png")
         iconInfo = _get_icon("Images/info.png")
         iconQuestion = _get_icon("Images/question.png")
 
@@ -256,7 +255,7 @@ class Ui_FrmPrincipal(QtCore.QObject):
         self.groupBoxExport = QtWidgets.QGroupBox(self.centralwidget)
         self.groupBoxExport.setEnabled(True)
         self.groupBoxExport.setFont(font)
-        self.groupBoxExport.setGeometry(QtCore.QRect(340, 20, 281, 81))
+        self.groupBoxExport.setGeometry(QtCore.QRect(390, 20, 201, 81))
         self.groupBoxExport.setStyleSheet("QGroupBox{\n"
                                           "  background-color: transparent;\n"
                                           "  background-clip: margin;\n"
@@ -291,7 +290,7 @@ class Ui_FrmPrincipal(QtCore.QObject):
 
         # Bnt CSV
         self.btnExpCSV = QtWidgets.QPushButton(self.groupBoxExport)
-        self.btnExpCSV.setGeometry(QtCore.QRect(100, 20, 82, 51))
+        self.btnExpCSV.setGeometry(QtCore.QRect(110, 20, 82, 51))
         self.btnExpCSV.setStyleSheet("border: 1px solid #8f8f91;\n"
                                      "border-radius: 6px;\n"
                                      "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde);\n"
@@ -302,18 +301,6 @@ class Ui_FrmPrincipal(QtCore.QObject):
         self.btnExpCSV.setObjectName(_fromUtf8("btnExpCSV"))
         # Btn Export CSV Click Event
         self.btnExpCSV.clicked.connect(self.Convert_Csv)
-
-        # Bnt PDF
-        self.btnExpPDF = QtWidgets.QPushButton(self.groupBoxExport)
-        self.btnExpPDF.setGeometry(QtCore.QRect(190, 20, 82, 51))
-        self.btnExpPDF.setStyleSheet("border: 1px solid #8f8f91;\n"
-                                     "border-radius: 6px;\n"
-                                     "background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde);\n"
-                                     "min-width: 80px;")
-        self.btnExpPDF.setText("")
-        self.btnExpPDF.setIcon(iconPdf)
-        self.btnExpPDF.setIconSize(QtCore.QSize(40, 40))
-        self.btnExpPDF.setObjectName(_fromUtf8("btnExpPDF"))
 
         # Bnt Information
         self.btnInfo = QtWidgets.QPushButton(self.centralwidget)

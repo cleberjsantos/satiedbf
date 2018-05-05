@@ -489,9 +489,9 @@ QComboBox::down-arrow:on {
     </property>
     <property name="geometry">
      <rect>
-      <x>340</x>
+      <x>390</x>
       <y>20</y>
-      <width>281</width>
+      <width>201</width>
       <height>81</height>
      </rect>
     </property>
@@ -526,7 +526,7 @@ QGroupBox::title
     <widget class="QPushButton" name="btnExpCSV">
      <property name="geometry">
       <rect>
-       <x>100</x>
+       <x>110</x>
        <y>20</y>
        <width>82</width>
        <height>51</height>
@@ -544,35 +544,6 @@ min-width: 80px;</string>
      <property name="icon">
       <iconset>
        <normaloff>../../Images/csv.png</normaloff>../../Images/csv.png</iconset>
-     </property>
-     <property name="iconSize">
-      <size>
-       <width>40</width>
-       <height>40</height>
-      </size>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="btnExpPDF">
-     <property name="geometry">
-      <rect>
-       <x>190</x>
-       <y>20</y>
-       <width>82</width>
-       <height>51</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">border: 1px solid #8f8f91;
-border-radius: 6px;
-background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #f6f7fa, stop: 1 #dadbde);
-min-width: 80px;</string>
-     </property>
-     <property name="text">
-      <string/>
-     </property>
-     <property name="icon">
-      <iconset>
-       <normaloff>../../Images/pdf.png</normaloff>../../Images/pdf.png</iconset>
      </property>
      <property name="iconSize">
       <size>
