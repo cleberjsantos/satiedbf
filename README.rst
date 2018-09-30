@@ -17,5 +17,11 @@ and non-commercial projects. The only requirement is to include the same license
 This is the MIT license: http://www.opensource.org/licenses/mit-license.php
 
 
+.. figure:: https://github.com/cleberjsantos/satiedbf/master/preview.png
+    :align: center
+    :height: 600px
+    :width: 800px
+
+
 .. _Qt 5.5: https://www.qt.io/
 .. _Python 3: https://www.python.org/
